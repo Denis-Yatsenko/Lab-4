@@ -1,0 +1,43 @@
+﻿@model Message.ViewModels.ChatViewModel
+<head>
+    <link href="~/css/MessageBox.css" rel="stylesheet" />
+</head>
+        <div id="container">
+
+            <aside>
+                <header>
+                    <input type="text" placeholder="search">
+                </header>
+                <ul style="text-align: left; overflow-y: hidden;">
+                    @foreach (var item in Model.Users)
+                    {
+                        <li class="ChatUser" id="@item.Username">
+                            <img src="@item.PhotoUrl" style="width:50px;height:50px;" alt="">
+                            <div>
+                                <h2>@item.Username</h2>
+                                <h3>
+                                    <span class="status orange"></span>
+                                    offline
+                                </h3>
+                            </div>
+                        </li>
+                    }
+                </ul>
+
+            </aside>
+            <div id="results" style="height: 800px; display: inline-block; font-size:15px; vertical-align:top;"></div>
+        </div>
+@section scripts{ 
+    <script>
+       $(document).ready(function (e) {
+           $('.ChatUser').each(function (index) {
+               $(this).click(function (e) {
+                   e.preventDefault();
+                   var userName = $(this).attr('id');
+                   userName = encodeURIComponent(userName);
+                   $('#results').load('@Url.Action("ChatName")?name=' + userName);
+               });
+           });
+       });
+    </script>
+}
